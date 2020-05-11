@@ -1,0 +1,18 @@
+# travis brauch für alles sudo rechte
+sudo: required
+
+# wir brauchen die docker cli
+services:
+    - docker
+
+# commads die vor dem Test und dem Deploy ausgeführt werden
+before_install:
+    # Im trainig haben wir mit der Docker Id geabreitet, jetzt tagen wir den Container mit -t
+    # Der tag kann auch einfach TESTME oder so heißen, der tag gilt nur in dieser Datei.
+    - docker build -t dipdiptortillachip/docker-react -f Dockerfile.dev .
+
+# alle commands die wir brauchen um den test server sauber zu starten
+script:
+    # travis bekommt eine Rückmeldung (Rückmeldung = 0, dann denkt tarvis = fehlgeschlagen und beendet es)
+    # npm run test zeigt nur sein test menü, deswegen müssen wir 
+    - docker run -e CI=true dipdiptortillachip/docker-react npm run test
